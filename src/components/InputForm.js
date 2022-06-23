@@ -23,67 +23,43 @@ const InputForm = () => {
 
 
  const Submitdata = (data) => {
-  
-
-    // setStartTime(StartTime);
-    // setEvent(event);
-    // setEndTime(EndedTime)
-
-
-  
 
     const events = [...event,data]
-    console.log(events);
 
-
- 
     setEvent(events);
-
-
-
 
  }
 
 
- const add = (data, StartTime) => {
+ const add = (data, StartTime,day,month) => {
    const { length } = event;
    const id = length + 1;
-   const found = event.some((el) => el.Starttime === StartTime);
-   if (!found) {
-      const events = [...event, data];
-      console.log(events);
+   const timefound = event.some((el) => el.Starttime === StartTime);
+   const dayfound = event.some((el) => el.convertedday === day);
+  const monthfound = event.some((el) => el.convertedmonth === month);
 
-      setEvent(events);
+   if (!timefound) {
+     const events = [...event, data];
+
+
+     setEvent(events);
    }
-  else{
-    alert("The slot is already taken")
-  }
+   else if(!dayfound){
+     const events = [...event, data];
+   
+
+     setEvent(events);
+
+   }
+   else if(timefound && dayfound && monthfound) {
+     alert("The slot is already taken");
+   }
  }
 
 
  const takingdate = (date) => {
   setStartDate(date);
  }
-
-
-
-
-console.log(event);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -105,7 +81,6 @@ console.log(event);
          return errors;
        }}
        onSubmit={(values, { setSubmitting,resetForm }) => {
-         //  console.log(values.StartTime.slice(0,5));
          const EventName = values.eventname;
          const Starttime = parseInt(values.StartTime?.slice(0, 5));
          const Endtime = parseInt(values.EndedTime);
@@ -151,8 +126,8 @@ console.log(event);
        
 
          setTimeout(() => {
-          //  alert(JSON.stringify(values, null, 2));
-           add(events, Starttime);
+      
+           add(events, Starttime,convertedday,convertedmonth);
             setStartDate(new Date());
           resetForm();
 
@@ -168,7 +143,7 @@ console.log(event);
          handleBlur,
          handleSubmit,
          isSubmitting,
-         /* and other goodies */
+   
        }) => (
          <form onSubmit={handleSubmit} className="form">
            <label>
@@ -182,7 +157,7 @@ console.log(event);
              value={values.eventname}
            />
            {errors.eventname && touched.eventname && errors.eventname}
-           <label>Enter Start Date and Time</label>
+           <label>Enter Start Time</label>
            <input
              type="text"
              name="StartTime"
@@ -191,7 +166,7 @@ console.log(event);
              value={values.StartTime}
            />
            {errors.StartTime && touched.StartTime && errors.StartTime}
-           <label>Enter End Date and Time</label>
+           <label>Enter End Time</label>
            <input
              type="text"
              name="EndedTime"
