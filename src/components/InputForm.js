@@ -1,14 +1,23 @@
 import React, { useState } from "react";
 import { Formik } from "formik";
+import DatePicker from "react-datepicker";
 
-import DateTimePicker from "react-datetime-picker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment";
+
+
 import CalenderScheduler from "./Calender";
+
+
+const date = moment().format("YYYY-MM-dd");
+
 
 const InputForm = () => {
 
- const [value, onChange] = useState(new Date());
+
  const [event,setEvent] = useState([])
  const [prevevent,setPrevevent] = useState([])
+  const [startDate, setStartDate] = useState(new Date());
 
 
 
@@ -38,13 +47,16 @@ const InputForm = () => {
 
  }
 
+console.log(startDate)
 
-console.log(event);
+const date = moment(startDate).format("YYYY-MM-DD");
+
+
 
  return (
    <div className="Form-parent">
      <Formik
-       initialValues={{ eventname: "", StartTime: "",EndedTime:"" }}
+       initialValues={{ eventname: "", StartTime: "", EndedTime: "" }}
        validate={(values) => {
          const errors = {};
          if (!values.eventname) {
@@ -57,16 +69,17 @@ console.log(event);
          return errors;
        }}
        onSubmit={(values, { setSubmitting }) => {
-      //  console.log(values.StartTime.slice(0,5));
-      const EventName = values.eventname;
-        const Starttime = parseInt(values.StartTime?.slice(0, 5));
+         //  console.log(values.StartTime.slice(0,5));
+         const EventName = values.eventname;
+         const Starttime = parseInt(values.StartTime?.slice(0, 5));
          const Endtime = parseInt(values.EndedTime);
 
          const events = { EventName, Starttime, Endtime };
-     
+
          setTimeout(() => {
            alert(JSON.stringify(values, null, 2));
            Submitdata(events);
+           setSubmitting(false);
          }, 400);
        }}
      >
@@ -81,7 +94,9 @@ console.log(event);
          /* and other goodies */
        }) => (
          <form onSubmit={handleSubmit} className="form">
-           <label>Enter Event Name</label>
+           <label>
+             <strong>Enter Event Name</strong>
+           </label>
            <input
              type="text"
              name="eventname"
@@ -108,14 +123,20 @@ console.log(event);
              value={values.EndedTime}
            />
            {errors.EndedTime && touched.EndedTime && errors.EndedTime}
-         
-           <button type="submit" >
+           <label>Select Date</label>
+           <DatePicker
+             selected={startDate}
+             onChange={(date) => setStartDate(date)}
+             dateFromat="YYYY-MM-dd"
+           />
+
+           <button type="submit" className="btn btn-success">
              Submit
            </button>
          </form>
        )}
      </Formik>
-     <CalenderScheduler events={event} />
+     <CalenderScheduler events={event} startdate={date} />
    </div>
  );};
 

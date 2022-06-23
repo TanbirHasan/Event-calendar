@@ -6,11 +6,13 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 //let allViews = Object.keys(Calendar.Views).map((k) => Calendar.Views[k]);
 
 const localizer = momentLocalizer(moment);
-const CalenderScheduler = ({events}) => {
+const CalenderScheduler = ({events,startdate}) => {
 
-  console.log(events.EventName);
-  console.log(events.Starttime);
-  console.log(events.Endtime);
+
+
+
+
+  console.log(startdate)
   
 
 
@@ -34,11 +36,14 @@ const CalenderScheduler = ({events}) => {
     <div className="Calendar" style={{ minHeight: 580,marginTop:'50px' }}>
       <Calendar
         events={events.map(data => {
+       
 
           return {
+            
            title : data.EventName,
            start : new Date(2022, 5, 23, data?.Starttime),
-           end : new Date(2022, 5, 23, data?.Endtime)
+           end : new Date(2022, 5, 23, data?.Endtime),
+           date : new Date(data.startDate)
 
 
           }

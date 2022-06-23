@@ -1,14 +1,18 @@
 import logo from './logo.svg';
 import './App.css';
-import CalenderScheduler from './Calender';
-import InputForm from './InputForm';
+import InputForm from './components/InputForm';
+import Header from './components/Header';
+
+
+
 
 function App() {
   return (
     <div className="App">
+      <Header/>
   
       <InputForm/>
-    
+      
     </div>
   );
 }

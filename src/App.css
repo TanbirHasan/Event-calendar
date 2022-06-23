@@ -31,3 +31,14 @@
 .Calendar{
   width: 90%;
 }
+
+.btn{
+  margin-top: 20px;
+}
+
+.rbc-event{
+  top: 41.6667%;
+    width: 100%;
+    height: 14.33333%!important;
+    left: 0%;
+}
