@@ -30,8 +30,11 @@ const InputForm = () => {
     // setEndTime(EndedTime)
 
 
+  
+
     const events = [...event,data]
     console.log(events);
+
 
  
     setEvent(events);
@@ -39,17 +42,50 @@ const InputForm = () => {
 
 
 
-  
-
-
-    
-
-
  }
 
-console.log(startDate)
 
-const date = moment(startDate).format("YYYY-MM-DD");
+ const add = (data, StartTime) => {
+   const { length } = event;
+   const id = length + 1;
+   const found = event.some((el) => el.Starttime === StartTime);
+   if (!found) {
+      const events = [...event, data];
+      console.log(events);
+
+      setEvent(events);
+   }
+  else{
+    alert("The slot is already taken")
+  }
+ }
+
+
+ const takingdate = (date) => {
+  setStartDate(date);
+ }
+
+
+
+
+console.log(event);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -68,18 +104,59 @@ const date = moment(startDate).format("YYYY-MM-DD");
          }
          return errors;
        }}
-       onSubmit={(values, { setSubmitting }) => {
+       onSubmit={(values, { setSubmitting,resetForm }) => {
          //  console.log(values.StartTime.slice(0,5));
          const EventName = values.eventname;
          const Starttime = parseInt(values.StartTime?.slice(0, 5));
          const Endtime = parseInt(values.EndedTime);
+         
 
-         const events = { EventName, Starttime, Endtime };
+           startDate.setMonth(startDate.getMonth() - 1);
+
+           const date = moment(startDate)
+             .format(`YYYY,MM,DD`)
+             .replace(/\b0/g, "");
+
+
+             const startdate = date;
+           
+
+             let year = moment(startdate).format("YYYY");
+             console.log(year);
+             let month = moment(startdate).format("MM");
+             console.log(month);
+              let day = moment(startdate).format("DD");
+               console.log(day);
+
+
+             let convertedyear = parseInt(year);
+
+
+             let convertedmonth = parseInt(month);
+             let convertedday = parseInt(day); 
+            
+        
+
+             console.log(date);
+
+         const events = {
+           EventName,
+           Starttime,
+           Endtime,
+           convertedyear,
+           convertedmonth,
+           convertedday,
+         };
+
+       
 
          setTimeout(() => {
-           alert(JSON.stringify(values, null, 2));
-           Submitdata(events);
-           setSubmitting(false);
+          //  alert(JSON.stringify(values, null, 2));
+           add(events, Starttime);
+            setStartDate(new Date());
+          resetForm();
+
+            
          }, 400);
        }}
      >
@@ -124,11 +201,14 @@ const date = moment(startDate).format("YYYY-MM-DD");
            />
            {errors.EndedTime && touched.EndedTime && errors.EndedTime}
            <label>Select Date</label>
-           <DatePicker
-             selected={startDate}
-             onChange={(date) => setStartDate(date)}
-             dateFromat="YYYY-MM-dd"
-           />
+           <div className="date">
+             <DatePicker
+               selected={startDate}
+               onChange={(date) => takingdate(date)}
+               dateFormat="yyyy-MM-dd"
+              
+             />
+           </div>
 
            <button type="submit" className="btn btn-success">
              Submit
@@ -136,7 +216,7 @@ const date = moment(startDate).format("YYYY-MM-DD");
          </form>
        )}
      </Formik>
-     <CalenderScheduler events={event} startdate={date} />
+     <CalenderScheduler events={event} />
    </div>
  );};
 
