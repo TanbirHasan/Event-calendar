@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
@@ -6,19 +6,44 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 //let allViews = Object.keys(Calendar.Views).map((k) => Calendar.Views[k]);
 
 const localizer = momentLocalizer(moment);
-const CalenderScheduler = () => {
+const CalenderScheduler = ({events}) => {
+
+  console.log(events.EventName);
+  console.log(events.Starttime);
+  console.log(events.Endtime);
+  
+
+
+  
+
+
+
+
+  // const eventss = [
+  //  {
+  //     title: events?.EventName,
+  //     allDay: false,
+  //     start: new Date(2022, 5, 23, events?.Starttime),
+  //     end: new Date(2022, 5, 23, events?.Endtime),
+  //   },
+  // ];
+
+
  
   return (
-    <div className="" style={{ minHeight: 580 }}>
+    <div className="Calendar" style={{ minHeight: 580,marginTop:'50px' }}>
       <Calendar
-        events={[
-          {
-            title: "My event",
-            allDay: false,
-            start: new Date(2022, 5, 23, 12, 0),
-            end: new Date(2022, 5, 23, 14, 0),
-          },
-        ]}
+        events={events.map(data => {
+
+          return {
+           title : data.EventName,
+           start : new Date(2022, 5, 23, data?.Starttime),
+           end : new Date(2022, 5, 23, data?.Endtime)
+
+
+          }
+          
+        })}
         defaultView="week"
         localizer={localizer}
         step={60}
